@@ -1,8 +1,8 @@
 /vendor/*
-/config/database.php
+
 /storage/*
 <<<<<<< HEAD
-/config/*
+
 /storage/*
 =======
 
