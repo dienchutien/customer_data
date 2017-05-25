@@ -1,0 +1,10 @@
+/vendor/*
+/config/database.php
+/storage/*
+<<<<<<< HEAD
+/config/*
+/storage/*
+=======
+
+>>>>>>> c4154ed214d993b03a94267c018510b4c7f0ffe7
+
