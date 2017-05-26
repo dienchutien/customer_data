@@ -188,7 +188,7 @@ class Job extends Model
             $val->supplier = isset($this->o_Supplier->getSupplierById($val->supplier_id)->name) ? $this->o_Supplier->getSupplierById($val->supplier_id)->name : 'ko xac dinh';
             $val->channel = isset($this->o_Channel->getChanneltById($val->channel_id)->name) ? $this->o_Channel->getChanneltById($val->channel_id)->name : 'khong xac dinh';
             $val->branch = isset($this->o_Branch->getBranchById($val->branch_id)->name) ? $this->o_Branch->getBranchById($val->branch_id)->name : 'khong xac dinh';
-            $val->user = $this->o_user->GetUserById($val->admin_modify)->email;            
+            $val->user = isset($this->o_user->GetUserById($val->admin_modify)->email)? $this->o_user->GetUserById($val->admin_modify)->email: 'kbit';            
             $val->date_finish = Util::sz_DateFinishFormat($val->date_finish);
             $val->updated_at = Util::sz_DateTimeFormat($val->updated_at);
             $money_total += $val->money;
