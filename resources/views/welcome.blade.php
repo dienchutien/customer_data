@@ -9,11 +9,11 @@
 <body>
     <div class="dx-index">
         <div class="box">
-            <div class="wap-logo"><img class="dx-logo" src="images/logo.png"></div>
+            <div class="wap-logo"><img class="dx-logo" src="images/logo-dxmb.jpg"></div>
         </div>
         <div class="dx-title">
-            <p>Marketing<p>
-            <span>Budget Management 2017</span>
+            <p>D-H<p>
+            <span>Manager Data</span>
             <div class="box">
                 @if (Route::has('login'))
                     @if (Auth::check())
