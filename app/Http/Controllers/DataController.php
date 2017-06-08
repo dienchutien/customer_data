@@ -42,5 +42,30 @@ class DataController extends Controller {
             return view('data.import');
         }
     }
+    
+    /**
+     * @Auth: Dienct
+     * @Des: list Data.
+     * @Since: 6/6/2017
+     */
+    public function getAllData() {
+        $a_Data = $this->o_Data->getAllSearch();
+
+        $Data_view['a_Jobs'] = $a_Data['a_data'];
+        $Data_view['a_search'] = $a_Data['a_search'];
+        
+        
+//        $Data_view['a_users'] = $this->o_user->getAll();
+//        $Data_view['a_projects'] = $this->o_Project->getAll();
+//        $Data_view['a_supplier'] = $this->o_Supplier->getAll();
+//        $Data_view['a_branch'] = $this->o_Branch->getAll();
+//        
+//        $aryAllChannel = array();
+//        $this->o_Channel->getAllChannelByParentID(0, $aryAllChannel);
+//        $Data_view['aryAllChannel'] = $aryAllChannel;
+
+        return view('data.index',$Data_view);
+        
+    }
 
 }

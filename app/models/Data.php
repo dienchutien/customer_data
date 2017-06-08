@@ -8,6 +8,7 @@ use DB;
 use App\Util;
 use Illuminate\Support\Facades\Input;
 use DateTime;
+use Illuminate\Support\Facades\Session;
 
 class Data extends Model {
 
@@ -133,6 +134,100 @@ class Data extends Model {
             //end process
         });
         return $a_Respon;
+    }
+    /**
+     * @Auth:Dienct
+     * @Des: get all record jobs table
+     * @Since: 06/03/2017
+     */
+    public function getAllSearch() {
+        DB::connection()->enableQueryLog();
+        $a_data = array();
+        $o_Db = DB::table('data')->select('*');
+        $a_search = array();
+
+        //search 
+        $i_is_payment = Input::get('is_payment','');
+        if($i_is_payment != '') {
+            $a_search['i_is_payment'] = $i_is_payment;
+            $a_data = $o_Db->where('is_payment', $i_is_payment);
+        }
+        
+        $sz_title_name = Input::get('title_name','');
+        if($sz_title_name != '') {
+            $a_search['title_name'] = $sz_title_name;
+            $a_data = $o_Db->where('title', 'like', '%'.$sz_title_name.'%');
+        }
+        
+        $i_admin_modify = Input::get('admin_modify','');
+        if($i_admin_modify != '') {
+            $a_search['admin_modify'] = $i_admin_modify;
+            $a_data = $o_Db->where('admin_modify', $i_admin_modify);
+        }
+        
+        $i_project = Input::get('project','');
+        if($i_project != '') {
+            $a_search['project'] = $i_project;
+            $a_data = $o_Db->where('project_id', $i_project);
+        }
+        
+        $i_supplier = Input::get('supplier','');
+        if($i_supplier != '') {
+            $a_search['supplier'] = $i_supplier;
+            $a_data = $o_Db->where('supplier_id', $i_supplier);
+        }
+        
+        $i_branch = Input::get('branch','');
+        if($i_branch != '') {
+            $a_search['branch'] = $i_branch;
+            $a_data = $o_Db->where('branch_id', $i_branch);
+        }
+        
+        $i_channel = Input::get('channel','');
+        if($i_channel != '') {
+            $a_search['channel'] = $i_channel;
+            $this->o_Channel->getAllChannelIDByParentID($i_channel,$aryChildID);
+            $aryChildID[] = $i_channel;
+            $a_data = $o_Db->whereIn('channel_id', $aryChildID);
+        }
+        
+        $sz_from_date = Input::get('from_date','');
+        if($sz_from_date != '') {
+            $a_search['from_date'] = $sz_from_date;
+            $a_data = $o_Db->where('date_finish','>=', date('Y-m-d',strtotime($sz_from_date)));
+           
+        }
+        
+        $sz_to_date = Input::get('to_date','');
+        if($sz_to_date != '') {
+            $a_search['to_date'] = $sz_to_date;
+            $a_data = $o_Db->where('date_finish','<=', date('Y-m-d',strtotime($sz_to_date)));
+           
+        }
+        
+        $a_data = $o_Db->orderBy('updated_at', 'desc')->paginate(30);
+        // sql
+        $query = DB::getQueryLog();
+        $query = end($query);
+        foreach ($query['bindings'] as $i => $binding) {
+            $query['bindings'][$i] = "'$binding'";
+        }
+
+        $sz_query_change = str_replace(array('%', '?'), array('%%', '%s'), $query['query']);
+        $sz_SqlFull = vsprintf($sz_query_change, $query['bindings']);        
+
+        // save session
+        Session::put('sqlGetJob', $sz_SqlFull);
+        
+        
+        foreach ($a_data as $key => &$val) {
+            $val->stt = $key + 1;
+            
+            $val->created_at = Util::sz_DateFinishFormat($val->created_at);
+            $val->updated_at = Util::sz_DateTimeFormat($val->updated_at);
+        }
+        $a_return = array('a_data' => $a_data, 'a_search' => $a_search);
+        return $a_return;
     }
 
 }
