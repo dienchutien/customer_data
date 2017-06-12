@@ -174,7 +174,7 @@ class Data extends Model {
         $i_project = Input::get('project','');
         if($i_project != '') {
             $a_search['project'] = $i_project;
-            $a_data = $o_Db->where('projects','like', '%'.$i_project.'%');
+            $a_data = $o_Db->where('project','like', '%'.$i_project.'%');
         }
         
         
@@ -182,14 +182,14 @@ class Data extends Model {
         $sz_from_date = Input::get('from_date','');
         if($sz_from_date != '') {
             $a_search['from_date'] = $sz_from_date;
-            $a_data = $o_Db->where('date_finish','>=', date('Y-m-d',strtotime($sz_from_date)));
+            $a_data = $o_Db->where('created_at','>=', date('Y-m-d',strtotime($sz_from_date)));
            
         }
         
         $sz_to_date = Input::get('to_date','');
         if($sz_to_date != '') {
             $a_search['to_date'] = $sz_to_date;
-            $a_data = $o_Db->where('date_finish','<=', date('Y-m-d',strtotime($sz_to_date)));
+            $a_data = $o_Db->where('created_at','<=', date('Y-m-d',strtotime($sz_to_date)));
            
         }
         
