@@ -147,49 +147,37 @@ class Data extends Model {
         $a_search = array();
 
         //search 
-        $i_is_payment = Input::get('is_payment','');
-        if($i_is_payment != '') {
-            $a_search['i_is_payment'] = $i_is_payment;
-            $a_data = $o_Db->where('is_payment', $i_is_payment);
+        $i_status = Input::get('phone_status','');
+        if($i_status != '') {
+            $a_search['phone_status'] = $i_status;
+            $a_data = $o_Db->where('status', $i_status);
         }
         
-        $sz_title_name = Input::get('title_name','');
-        if($sz_title_name != '') {
-            $a_search['title_name'] = $sz_title_name;
-            $a_data = $o_Db->where('title', 'like', '%'.$sz_title_name.'%');
+        $sz_phone_number = Input::get('phone_number','');
+        if($sz_phone_number != '') {
+            $a_search['phone_number'] = $sz_phone_number;
+            $a_data = $o_Db->where('phone', 'like', '%'.$sz_phone_number.'%');
         }
         
-        $i_admin_modify = Input::get('admin_modify','');
-        if($i_admin_modify != '') {
-            $a_search['admin_modify'] = $i_admin_modify;
-            $a_data = $o_Db->where('admin_modify', $i_admin_modify);
+        $i_assigner = Input::get('assigner','');
+        if($i_assigner != '') {
+            $a_search['assigner'] = $i_assigner;
+            $a_data = $o_Db->where('partner', 'like', '%'.$i_assigner.'%');
+        }
+        
+        $i_Noassigner = Input::get('not_assigner','');
+        if($i_Noassigner != '') {
+            $a_search['not_assigner'] = $i_Noassigner;
+            $a_data = $o_Db->where('partner', 'not like', '%'.$i_Noassigner.'%');
         }
         
         $i_project = Input::get('project','');
         if($i_project != '') {
             $a_search['project'] = $i_project;
-            $a_data = $o_Db->where('project_id', $i_project);
+            $a_data = $o_Db->where('projects','like', '%'.$i_project.'%');
         }
         
-        $i_supplier = Input::get('supplier','');
-        if($i_supplier != '') {
-            $a_search['supplier'] = $i_supplier;
-            $a_data = $o_Db->where('supplier_id', $i_supplier);
-        }
         
-        $i_branch = Input::get('branch','');
-        if($i_branch != '') {
-            $a_search['branch'] = $i_branch;
-            $a_data = $o_Db->where('branch_id', $i_branch);
-        }
-        
-        $i_channel = Input::get('channel','');
-        if($i_channel != '') {
-            $a_search['channel'] = $i_channel;
-            $this->o_Channel->getAllChannelIDByParentID($i_channel,$aryChildID);
-            $aryChildID[] = $i_channel;
-            $a_data = $o_Db->whereIn('channel_id', $aryChildID);
-        }
         
         $sz_from_date = Input::get('from_date','');
         if($sz_from_date != '') {
@@ -214,7 +202,7 @@ class Data extends Model {
         }
 
         $sz_query_change = str_replace(array('%', '?'), array('%%', '%s'), $query['query']);
-        $sz_SqlFull = vsprintf($sz_query_change, $query['bindings']);        
+        $sz_SqlFull = vsprintf($sz_query_change, $query['bindings']);
 
         // save session
         Session::put('sqlGetJob', $sz_SqlFull);

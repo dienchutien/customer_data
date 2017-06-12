@@ -5,13 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use App\models\Data;
+use App\User;
 
 class DataController extends Controller {
 
     private $o_Data;
+    private $o_User;
 
     public function __construct() {
         $this->o_Data = new Data();
+        $this->o_user = new User();
     }
 
     /**
@@ -55,7 +58,7 @@ class DataController extends Controller {
         $Data_view['a_search'] = $a_Data['a_search'];
         
         
-//        $Data_view['a_users'] = $this->o_user->getAll();
+        $Data_view['a_users'] = $this->o_user->getAll();        
 //        $Data_view['a_projects'] = $this->o_Project->getAll();
 //        $Data_view['a_supplier'] = $this->o_Supplier->getAll();
 //        $Data_view['a_branch'] = $this->o_Branch->getAll();

@@ -5,40 +5,41 @@
 <form method="get" action="" id="frmFilter" name="frmFilter"  class="form-inline">
     <input type="hidden" name="_token" value="{!! csrf_token() !!}">
     <div class="form-group">
-        <select id="is_payment" name="is_payment" class="form-control input-sm">
-            <option value="">Trạng thái</option>
-            <option value="1" <?php echo isset($a_search['i_is_payment']) && $a_search['i_is_payment'] == 1 ? 'selected':''?>>Đã tổng hợp</option>
-            <option value="0" <?php echo isset($a_search['i_is_payment']) && $a_search['i_is_payment'] == 0 ? 'selected':''?>>Chưa tổng hợp</option>            
+        <select id="phone_status" name="phone_status" class="form-control input-sm">            
+            <option value="1" <?php echo isset($a_search['phone_status']) && $a_search['phone_status'] == 1 ? 'selected':''?>>Online</option>
+            <option value="0" <?php echo isset($a_search['phone_status']) && $a_search['phone_status'] == 0 ? 'selected':''?>>Offline</option>            
         </select>
     </div>
     <div class="form-group">
-        <input id="title_name" name="title_name" type="text" class="form-control input-sm" placeholder="Nhập tiêu đề tác vụ" value="<?php echo isset($a_search['title_name'])?$a_search['title_name']:''?>">
+        <input id="phone_number" name="phone_number" type="text" class="form-control input-sm" placeholder="Nhập SDT" value="<?php echo isset($a_search['phone_number'])?$a_search['phone_number']:''?>">
     </div>
     <div class="form-group">
-        <select id="admin_modify" name="admin_modify" class="form-control input-sm">
-            <option value="">Người cập nhật</option>
+        <select id="assigner" name="assigner" class="form-control input-sm">
+            <option value="">Người đảm nhận</option>
             @if(isset($a_users) && count($a_users) > 0)
                 @foreach($a_users as $a_user )
-                <option value="{{$a_user->id}}" <?php echo isset($a_search['admin_modify']) && $a_search['admin_modify'] == $a_user->id ? 'selected':''?> >{{$a_user->email}}</option>
+                <option value="{{$a_user->id}}" <?php echo isset($a_search['assigner']) && $a_search['assigner'] == $a_user->id ? 'selected':''?> >{{$a_user->email}}</option>
                 @endforeach
             @endif                      
         </select>
     </div>
-    
+    <div class="form-group">
+        <select id="not_assigner" name="not_assigner" class="form-control input-sm">
+            <option value="">Người Ko đảm nhận</option>
+            @if(isset($a_users) && count($a_users) > 0)
+                @foreach($a_users as $a_user )
+                <option value="{{$a_user->id}}" <?php echo isset($a_search['not_assigner']) && $a_search['not_assigner'] == $a_user->id ? 'selected':''?> >{{$a_user->email}}</option>
+                @endforeach
+            @endif                      
+        </select>
+    </div>
     </br></br>
     <div class="form-group">
         <input type="text" class="form-control datepicker input-sm" id="from_date" name="from_date" placeholder="Từ ngày" value="<?php echo isset($a_search['from_date'])?$a_search['from_date']:''?>"> <span class="glyphicon glyphicon-minus"></span>
         <input type="text" class="form-control datepicker input-sm" id="to_date" name="to_date" placeholder="Tới ngày" value="<?php echo isset($a_search['to_date'])?$a_search['to_date']:''?>">
     </div>
     <div class="form-group">
-        <select id="project" name="project" class="form-control input-sm">
-            <option value="">Dự án</option>
-            @if(isset($a_projects) && count($a_projects) > 0)
-                @foreach($a_projects as $a_project )
-                <option value="{{$a_project->id}}" <?php echo isset($a_search['project']) && $a_search['project'] == $a_project->id ? 'selected':''?> >{{$a_project->name}}</option>
-                @endforeach
-            @endif
-        </select>
+        <input id="project" name="project" type="text" class="form-control input-sm" placeholder="Nhập dự án" value="<?php echo isset($a_search['project'])?$a_search['project']:''?>">
     </div>
     
     <div class="form-group">

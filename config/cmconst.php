@@ -33,6 +33,11 @@ return [
             'Danh sách nhóm quyền'=>'ListRoleGroup',
             'Sửa nhóm quyền'=>'editRoleGroup',
             'Thêm mới nhóm quyền'=>'insertRoleGroup'
+        ],
+        'DataController'=>[
+            'Danh sách Server'=>'getAllData',
+            'Sửa nhóm quyền'=>'editRoleGroup',
+            'Thêm mới nhóm quyền'=>'insertRoleGroup'
         ]
     ],
     'name_controller'=>[
@@ -42,7 +47,8 @@ return [
         'ChannelController'=>'Quản lý kênh',
         'BranchController'=>'Quản lý chi nhánh',
         'JobController'=>'Quản lý tác vụ',
-        'RoleController'=>'Quản lý phân quyền'
+        'RoleController'=>'Quản lý phân quyền',
+        'DataController'=>'Quản lý Data'
     ]
     
 ];
