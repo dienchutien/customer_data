@@ -193,7 +193,7 @@ class Data extends Model {
            
         }
         
-        $a_data = $o_Db->orderBy('updated_at', 'desc')->paginate(30);
+        $a_data = $o_Db->orderBy('updated_at', 'desc')->paginate(20);
         // sql
         $query = DB::getQueryLog();
         $query = end($query);
