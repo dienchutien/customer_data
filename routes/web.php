@@ -66,7 +66,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('customer/list', 'DataController@getAllData');
     Route::get('customer/addedit', 'DataController@importExcel');
     Route::post('customer/addedit','DataController@importExcel');
-    Route::get('export_excel_customer', 'JobController@exportJob');
+    Route::get('data_transfer', 'DataController@DataTransfer');
     Route::get('customer/statistics', 'JobController@jobStatistics');
     Route::get('export_customer_statistics', 'JobController@exportJobStatistics');
 });

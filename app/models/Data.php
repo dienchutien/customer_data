@@ -193,7 +193,7 @@ class Data extends Model {
            
         }
         
-        $a_data = $o_Db->orderBy('updated_at', 'desc')->paginate(30);
+        $a_data = $o_Db->orderBy('created_at', 'desc')->paginate(20);
         // sql
         $query = DB::getQueryLog();
         $query = end($query);
@@ -205,7 +205,7 @@ class Data extends Model {
         $sz_SqlFull = vsprintf($sz_query_change, $query['bindings']);
 
         // save session
-        Session::put('sqlGetJob', $sz_SqlFull);
+        Session::put('sqlDataTransfer', $sz_SqlFull);
         
         
         foreach ($a_data as $key => &$val) {
