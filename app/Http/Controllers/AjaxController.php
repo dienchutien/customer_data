@@ -53,6 +53,9 @@ class AjaxController extends Controller
             case "save-session-job-statistics":
                 $this->SaveSessionStatistics();
                 break;
+            case "transfer-data":
+                $this->TransferData();
+                break;
             default:
                 break;
         }
@@ -93,6 +96,47 @@ class AjaxController extends Controller
      */
     protected function RecoverRow(){
 
+        if($this->i_id == 0 || $this->sz_tbl == "") exit;
+        
+            // update
+            $res = DB::table($this->sz_tbl)->where('id',(int)$this->i_id)->update(array('status' => 1));
+        
+        if($res){
+            $arrayRes = array('success' => "Cập nhật dữ liệu thành công!",
+                              'result' => 1 
+                );
+        }else{
+            $arrayRes = array('success' => "Không thể cập nhật dữ liệu!",
+                               'result' => 0,
+                );
+        }
+        echo json_encode($arrayRes);
+
+    }
+    /**
+     * @Auth: DienCt
+     * @Des: Transfer Data
+     * @Since: 14/06/2017
+     */
+    protected function TransferData(){
+        $partnerID = Input::get('new_assigner');
+        $sz_Sql = Session::get('sqlDataTransfer');
+        if(strpos($sz_Sql, 'limit') !== false){
+            $arr =  explode('limit',$sz_Sql);
+            $sz_Sql = $arr[0];
+        }
+        $a_Data = DB::select(DB::raw($sz_Sql));
+        $aryError = true;
+        
+        if(count($a_Data) > 0){
+            foreach($a_Data as $key => $val){
+                
+                
+            }
+        }
+        
+        
+        
         if($this->i_id == 0 || $this->sz_tbl == "") exit;
         
             // update

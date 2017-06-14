@@ -86,6 +86,29 @@ var GLOBAL_JS = {
             }
         });
     },
+    /**
+     * Auth: Dienct
+     * Des: transfer Data
+     * Since: 14/06/2017
+     * */
+    v_fTransferData: function () {
+        var new_assigner = $('#new_assigner').val();
+        var o_data = {
+            new_assigner: new_assigner,
+            func: 'transfer-data',
+            tbl: GLOBAL_JS.sz_Tbl,
+        };
+        $.ajax({
+            url: GLOBAL_JS.sz_CurrentHost + '/ajax',
+            type: 'POST',
+            data: o_data,
+            dataType: 'json',
+            success: function (data) {
+                alert(data.success);
+                location.reload();
+            }
+        });
+    },
     v_fUpdateStatus: function (id, type) {
         var sz_confirm = type == 1 ? "Bạn có muốn cho vào thùng rác?" : "Bạn có muốn xóa đơn này?";
         if (confirm(sz_confirm)) {

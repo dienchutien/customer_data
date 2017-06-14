@@ -57,7 +57,7 @@
             @endforeach
             @endif                      
         </select>
-            <a class="btn btn-primary btn-sm" href="/data_transfer" target="_blank">Bàn giao</a>
+            <a class="btn btn-primary btn-sm" onclick="GLOBAL_JS.v_fTransferData();">Bàn giao</a>
         </div>
     </div>
 </form>
