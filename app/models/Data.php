@@ -168,7 +168,10 @@ class Data extends Model {
         $i_Noassigner = Input::get('not_assigner','');
         if($i_Noassigner != '') {
             $a_search['not_assigner'] = $i_Noassigner;
-            $a_data = $o_Db->where('partner', 'not like', '%'.$i_Noassigner.'%');
+            $a_data = $o_Db->where(function ($query) use ($i_Noassigner) {
+                $query->where('partner', 'not like', '%'.$i_Noassigner.'%')
+                      ->orWhere('partner',null);
+            });
         }
         
         $i_project = Input::get('project','');
