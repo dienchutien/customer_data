@@ -193,7 +193,7 @@ class Data extends Model {
            
         }
         
-        $a_data = $o_Db->orderBy('created_at', 'desc')->paginate(20);
+        $a_data = $o_Db->orderBy('created_at', 'desc')->paginate(30);
         // sql
         $query = DB::getQueryLog();
         $query = end($query);
