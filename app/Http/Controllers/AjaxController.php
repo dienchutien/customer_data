@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Input;
 
 use App\Util;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Mail;
 
 class AjaxController extends Controller
 {
@@ -120,6 +121,9 @@ class AjaxController extends Controller
      */
     protected function TransferData(){
         $partnerID = Input::get('new_assigner');
+        $o_partner = DB::table('users')->where('id', $partnerID)->first();
+        $partnerEmail = $o_partner->email;
+        
         $sz_Sql = Session::get('sqlDataTransfer');
         if(strpos($sz_Sql, 'limit') !== false){
             $arr =  explode('limit',$sz_Sql);
@@ -145,6 +149,11 @@ class AjaxController extends Controller
                     $res = DB::table($this->sz_tbl)->where('id',$o_val->id)->update(array('partner' => $partnerSTR));
                 }
             }
+                    Mail::send('data.mailH', array('a_EmailBody' => $a_Data), function($message) use ($partnerEmail){
+                        ///Gửi email tới người duyệt đơn///
+                        $message->to($partnerEmail);
+                        $message->subject(rand(10,1000));
+                    });
             $aryMSG['msg'] = 'Cap nhat thanh cong';
         }
         echo json_encode($aryMSG);

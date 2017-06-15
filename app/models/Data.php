@@ -110,12 +110,7 @@ class Data extends Model {
                     } else {
                         $a_Respon['insert'] = "Insert new data failed! <br/>";
                     }
-                    $titleMail = rand(10,1000);
-                    Mail::send('data.mailH', array('a_EmailBody' => $a_NewUsers), function($message) use ($titleMail){
-                        ///Gửi email tới người duyệt đơn///
-                        $message->to('dienct@dxmb.vn');
-                        $message->subject($titleMail);
-                    });
+                    
                 } else {
                     $a_Respon['insert'] = "No any new data found! <br/>";
                 }
