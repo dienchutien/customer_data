@@ -93,6 +93,9 @@ var GLOBAL_JS = {
      * */
     v_fTransferData: function () {
         var new_assigner = $('#new_assigner').val();
+        if(new_assigner == ''){
+            alert('Kiểm tra người assigner!'); return;
+        }
         var o_data = {
             new_assigner: new_assigner,
             func: 'transfer-data',
@@ -104,7 +107,7 @@ var GLOBAL_JS = {
             data: o_data,
             dataType: 'json',
             success: function (data) {
-                alert(data.success);
+                alert(data.msg);
                 location.reload();
             }
         });

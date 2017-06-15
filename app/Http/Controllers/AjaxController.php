@@ -125,33 +125,29 @@ class AjaxController extends Controller
             $arr =  explode('limit',$sz_Sql);
             $sz_Sql = $arr[0];
         }
-        $a_Data = DB::select(DB::raw($sz_Sql));
-        $aryError = true;
-        
+        $a_Data = DB::select(DB::raw($sz_Sql));        
+        $aryMSG = array();
+        $flagError = 0;
         if(count($a_Data) > 0){
-            foreach($a_Data as $key => $val){
-                
-                
+            foreach($a_Data as $key =>$o_val){
+                if(strpos($o_val->partner, $partnerID ) !== false) $flagError = 1;
             }
         }
-        
-        
-        
-        if($this->i_id == 0 || $this->sz_tbl == "") exit;
-        
-            // update
-            $res = DB::table($this->sz_tbl)->where('id',(int)$this->i_id)->update(array('status' => 1));
-        
-        if($res){
-            $arrayRes = array('success' => "Cập nhật dữ liệu thành công!",
-                              'result' => 1 
-                );
+        if($flagError == 1){
+            $aryMSG['msg'] = 'Đã được phân quyền cho người này, kiểm tra dữ liệu';
         }else{
-            $arrayRes = array('success' => "Không thể cập nhật dữ liệu!",
-                               'result' => 0,
-                );
+            foreach($a_Data as $key =>$o_val){
+                
+                if($o_val->partner == null || $o_val->partner == ''){
+                    $res = DB::table($this->sz_tbl)->where('id',$o_val->id)->update(array('partner' => $partnerID));
+                }else{
+                    $partnerSTR = $o_val->partner.','.$partnerID;
+                    $res = DB::table($this->sz_tbl)->where('id',$o_val->id)->update(array('partner' => $partnerSTR));
+                }
+            }
+            $aryMSG['msg'] = 'Cap nhat thanh cong';
         }
-        echo json_encode($arrayRes);
+        echo json_encode($aryMSG);
 
     }
     
