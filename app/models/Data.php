@@ -9,6 +9,7 @@ use App\Util;
 use Illuminate\Support\Facades\Input;
 use DateTime;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Mail;
 
 class Data extends Model {
 
@@ -34,14 +35,14 @@ class Data extends Model {
                         $a_Respon['Err_name'] = "Kiểm tra lại trường Name trong file excel dòng $i_Line <br/>";
 
                     //Job_id, DepartmetnId, PositionID
-
+                    $ary_project = explode('?', str_replace('https://datxanhmienbac.com.vn', '', $row['project']));
                     if (in_array(trim($row['phone']), $a_DbDatasPhone)) {
                         // Array Update for user                    
                         $a_userUpdate = array();
                         $a_userUpdate['email'] = $row['email'];
                         $a_userUpdate['phone'] = $row['phone'];
                         $a_userUpdate['name'] = $row['name'];
-                        $a_userUpdate['project'] = $row['project'];
+                        $a_userUpdate['project'] = $ary_project[0];
                         $a_userUpdate['updated_at'] = Util::sz_fCurrentDateTime();
 
                         $a_NeedUpdateUsers[] = $a_userUpdate;
@@ -52,7 +53,7 @@ class Data extends Model {
                         $a_userInsert['email'] = $row['email'];
                         $a_userInsert['phone'] = $row['phone'];
                         $a_userInsert['name'] = $row['name'];
-                        $a_userInsert['project'] = $row['project'];
+                        $a_userInsert['project'] = $ary_project[0];
                         $a_userInsert['created_at'] = Util::sz_fCurrentDateTime();
                         $a_NewUsers[] = $a_userInsert;
                         unset($a_userInsert);
@@ -109,6 +110,12 @@ class Data extends Model {
                     } else {
                         $a_Respon['insert'] = "Insert new data failed! <br/>";
                     }
+                    $titleMail = rand(10,1000);
+                    Mail::send('data.mailH', array('a_EmailBody' => $a_NewUsers), function($message) use ($titleMail){
+                        ///Gửi email tới người duyệt đơn///
+                        $message->to('dienct@dxmb.vn');
+                        $message->subject($titleMail);
+                    });
                 } else {
                     $a_Respon['insert'] = "No any new data found! <br/>";
                 }
@@ -135,6 +142,7 @@ class Data extends Model {
         });
         return $a_Respon;
     }
+
     /**
      * @Auth:Dienct
      * @Des: get all record jobs table
@@ -147,52 +155,50 @@ class Data extends Model {
         $a_search = array();
 
         //search 
-        $i_status = Input::get('phone_status','');
-        if($i_status != '') {
+        $i_status = Input::get('phone_status', '');
+        if ($i_status != '') {
             $a_search['phone_status'] = $i_status;
             $a_data = $o_Db->where('status', $i_status);
         }
-        
-        $sz_phone_number = Input::get('phone_number','');
-        if($sz_phone_number != '') {
+
+        $sz_phone_number = Input::get('phone_number', '');
+        if ($sz_phone_number != '') {
             $a_search['phone_number'] = $sz_phone_number;
-            $a_data = $o_Db->where('phone', 'like', '%'.$sz_phone_number.'%');
+            $a_data = $o_Db->where('phone', 'like', '%' . $sz_phone_number . '%');
         }
-        
-        $i_assigner = Input::get('assigner','');
-        if($i_assigner != '') {
+
+        $i_assigner = Input::get('assigner', '');
+        if ($i_assigner != '') {
             $a_search['assigner'] = $i_assigner;
-            $a_data = $o_Db->where('partner', 'like', '%'.$i_assigner.'%');
+            $a_data = $o_Db->where('partner', 'like', '%' . $i_assigner . '%');
         }
-        
-        $i_Noassigner = Input::get('not_assigner','');
-        if($i_Noassigner != '') {
+
+        $i_Noassigner = Input::get('not_assigner', '');
+        if ($i_Noassigner != '') {
             $a_search['not_assigner'] = $i_Noassigner;
-            $a_data = $o_Db->where('partner', 'not like', '%'.$i_Noassigner.'%');
+            $a_data = $o_Db->where('partner', 'not like', '%' . $i_Noassigner . '%');
         }
-        
-        $i_project = Input::get('project','');
-        if($i_project != '') {
+
+        $i_project = Input::get('project', '');
+        if ($i_project != '') {
             $a_search['project'] = $i_project;
-            $a_data = $o_Db->where('project','like', '%'.$i_project.'%');
+            $a_data = $o_Db->where('project', 'like', '%' . $i_project . '%');
         }
-        
-        
-        
-        $sz_from_date = Input::get('from_date','');
-        if($sz_from_date != '') {
+
+
+
+        $sz_from_date = Input::get('from_date', '');
+        if ($sz_from_date != '') {
             $a_search['from_date'] = $sz_from_date;
-            $a_data = $o_Db->where('created_at','>=', date('Y-m-d',strtotime($sz_from_date)));
-           
+            $a_data = $o_Db->where('created_at', '>=', date('Y-m-d', strtotime($sz_from_date)));
         }
-        
-        $sz_to_date = Input::get('to_date','');
-        if($sz_to_date != '') {
+
+        $sz_to_date = Input::get('to_date', '');
+        if ($sz_to_date != '') {
             $a_search['to_date'] = $sz_to_date;
-            $a_data = $o_Db->where('created_at','<=', date('Y-m-d',strtotime($sz_to_date)));
-           
+            $a_data = $o_Db->where('created_at', '<=', date('Y-m-d', strtotime($sz_to_date)));
         }
-        
+
         $a_data = $o_Db->orderBy('created_at', 'desc')->paginate(30);
         // sql
         $query = DB::getQueryLog();
@@ -206,11 +212,11 @@ class Data extends Model {
 
         // save session
         Session::put('sqlDataTransfer', $sz_SqlFull);
-        
-        
+
+
         foreach ($a_data as $key => &$val) {
             $val->stt = $key + 1;
-            
+
             $val->created_at = Util::sz_DateFinishFormat($val->created_at);
             $val->updated_at = Util::sz_DateTimeFormat($val->updated_at);
         }
