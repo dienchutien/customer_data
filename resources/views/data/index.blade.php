@@ -18,7 +18,7 @@
             <option value="">Người đảm nhận</option>
             @if(isset($a_users) && count($a_users) > 0)
             @foreach($a_users as $a_user )
-            <option value="{{$a_user->id}}" <?php echo isset($a_search['assigner']) && $a_search['assigner'] == $a_user->id ? 'selected' : '' ?> >{{$a_user->email}}</option>
+            <option value="{{$a_user->id}}" <?php echo isset($a_search['assigner']) && $a_search['assigner'] == $a_user->id ? 'selected' : '' ?> >{{$a_user->name}}</option>
             @endforeach
             @endif                      
         </select>
@@ -28,7 +28,7 @@
             <option value="">Người Ko đảm nhận</option>
             @if(isset($a_users) && count($a_users) > 0)
             @foreach($a_users as $a_user )
-            <option value="{{$a_user->id}}" <?php echo isset($a_search['not_assigner']) && $a_search['not_assigner'] == $a_user->id ? 'selected' : '' ?> >{{$a_user->email}}</option>
+            <option value="{{$a_user->id}}" <?php echo isset($a_search['not_assigner']) && $a_search['not_assigner'] == $a_user->id ? 'selected' : '' ?> >{{$a_user->name}}</option>
             @endforeach
             @endif                      
         </select>
@@ -53,7 +53,7 @@
             <option value="">Người nhận nhiệm vụ mới</option>
             @if(isset($a_users) && count($a_users) > 0)
             @foreach($a_users as $a_user )
-            <option value="{{$a_user->id}}" <?php echo isset($a_search['not_assigner']) && $a_search['not_assigner'] == $a_user->id ? 'selected' : '' ?> >{{$a_user->email}}</option>
+            <option value="{{$a_user->id}}" <?php echo isset($a_search['not_assigner']) && $a_search['not_assigner'] == $a_user->id ? 'selected' : '' ?> >{{$a_user->name}}</option>
             @endforeach
             @endif                      
         </select>
