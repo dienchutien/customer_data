@@ -214,7 +214,9 @@ class Data extends Model {
 
         foreach ($a_data as $key => &$val) {
             $val->stt = $key + 1;
-
+            $val->partner = str_replace(
+                    array('1', '2','3','4','5'), array('Diên', 'Huy', 'Hạnh', 'Dung','Vân'), $val->partner
+            );
             $val->created_at = Util::sz_DateFinishFormat($val->created_at);
             $val->updated_at = Util::sz_DateTimeFormat($val->updated_at);
         }
