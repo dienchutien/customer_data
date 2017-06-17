@@ -76,7 +76,7 @@
         </tr>
         @foreach ($a_Jobs as $a_val)
         <tr>
-            <td>    {{ $a_val->stt }}</td>
+            <td>    {{ $a_val->id }}</td>
             <td>    {{ $a_val->name }}</td>
             <td>    {{ $a_val->phone }}</td>
             <td>    {{ $a_val->email }}</td>
