@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Input;
 use App\models\Data;
 use App\User;
 use Illuminate\Support\Facades\Session;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
+use DB;
+use App\Util;
 
 class DataController extends Controller {
 
@@ -59,6 +62,32 @@ class DataController extends Controller {
         $Data_view['a_search'] = $a_Data['a_search'];
         $Data_view['a_users'] = $this->o_user->getAll();
         return view('data.index',$Data_view);
+    }
+    
+    public function autoGetData(){
+        $newData = DB::connection('mongodb')->collection('regproject')->orderBy('createTime', 'desc')->take(25)->get();
+        if(count($newData) > 0){
+            $i_success = 0;
+            foreach($newData as $key => $val){                
+                if(isset($val['phone']) && $val['phone'] != ''){
+                    $checkIsset = DB::table('data')->where('phone', $val['phone'])->get();
+                    if(count($checkIsset) == 0){
+                        $ary_project = explode('?', str_replace('https://datxanhmienbac.com.vn', '', $val['url']));
+                        $dataInsert = array();
+                        $dataInsert['email'] = $val['email'];
+                        $dataInsert['phone'] = $val['phone'];
+                        $dataInsert['name'] = isset($val['name']) && $val['name'] != '' ? $val['name']: $val['email'];
+                        $dataInsert['project'] = $ary_project[0];
+                        $dataInsert['created_at'] = Util::sz_fCurrentDateTime();
+                        DB::table('data')->insert($dataInsert);                        
+                        unset($dataInsert);
+                        $i_success ++;
+                    }
+                }
+            }
+            echo 'Them duoc '.$i_success.' data';
+        }
+
     }
 
 }
