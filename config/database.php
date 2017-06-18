@@ -65,6 +65,17 @@ return [
             'schema' => 'public',
             'sslmode' => 'prefer',
         ],
+        'mongodb' => [
+            'driver'   => 'mongodb',
+            'host'     => env('DB_HOST', '103.68.81.217'),
+            'port'     => env('DB_PORT', 27017),
+            'database' => 'datxanh',
+            'username' => 'datXanhWeb',
+            'password' => 'datXanhWeb123!@#',
+            'options'  => [
+                'database' => 'datxanh' // sets the authentication database required by mongo 3
+            ]
+        ],
 
     ],
 
