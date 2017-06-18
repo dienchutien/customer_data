@@ -197,7 +197,7 @@ class Data extends Model {
             $a_data = $o_Db->where('created_at', '<=', date('Y-m-d', strtotime($sz_to_date)));
         }
 
-        $a_data = $o_Db->orderBy('created_at', 'desc')->paginate(30);
+        $a_data = $o_Db->orderBy('id', 'desc')->paginate(30);
         // sql
         $query = DB::getQueryLog();
         $query = end($query);
@@ -212,8 +212,7 @@ class Data extends Model {
         Session::put('sqlDataTransfer', $sz_SqlFull);
 
 
-        foreach ($a_data as $key => &$val) {
-            $val->stt = $key + 1;
+        foreach ($a_data as $key => &$val) {            
             $val->partner = str_replace(
                     array('1', '2','3','4','5'), array('Diên', 'Huy', 'Hạnh', 'Dung','Vân'), $val->partner
             );
