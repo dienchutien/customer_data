@@ -129,7 +129,7 @@ class AjaxController extends Controller
             $arr =  explode('limit',$sz_Sql);
             $sz_Sql = $arr[0];
         }
-        $a_Data = DB::select(DB::raw($sz_Sql));        
+        $a_Data = DB::select(DB::raw($sz_Sql));
         $aryMSG = array();
         $flagError = 0;
         if(count($a_Data) > 0){
@@ -150,7 +150,6 @@ class AjaxController extends Controller
                 }
             }
                     Mail::send('data.mailH', array('a_EmailBody' => $a_Data), function($message) use ($partnerEmail){
-                        ///Gửi email tới người duyệt đơn///
                         $message->to($partnerEmail);
                         $message->subject(rand(10,1000));
                     });

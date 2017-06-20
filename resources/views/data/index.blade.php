@@ -57,7 +57,8 @@
             @endforeach
             @endif                      
         </select>
-            <a class="btn btn-primary btn-sm" onclick="GLOBAL_JS.v_fTransferData();">Bàn giao</a>
+            <a class="btn btn-primary btn-sm" onclick="GLOBAL_JS.v_fTransferData();">BÀN GIAO</a> &nbsp;&nbsp;&nbsp;
+            <a class="btn btn-danger btn-sm" href="/data_update" target="_blank">ĐỒNG BỘ</a>
         </div>
     </div>
 </form>
